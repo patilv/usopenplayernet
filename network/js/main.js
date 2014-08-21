@@ -493,7 +493,7 @@ function nodeActive(a) {
             
             
       //clear our connection list to get ready to repopulate
-      //if(connectionList.items.length>0) connectionList.clear();
+      if(connectionList && connectionList.items.length > 0 ) connectionList.clear();
       
       
        var wins = usopenData.filter(function(p){return p.winner_last_name.toLowerCase() == sigInst.getNodes(a).label});
@@ -532,12 +532,15 @@ function nodeActive(a) {
 				f.push('<li class="cf" rel="' + c.color + '"><div class=""></div><div class="">' + d + "</div></li>");
 			}*/
       //if(g=="0") {
+      
+      
         $(".link ul").append(
-          '<li class="membership"><a class="playername"" href="#' + c.name + 
-          '" onmouseover="sigInst._core.plotter.drawHoverNode(sigInst._core.graph.nodesIndex[\'' + c.id + '\'])\" onclick=\"nodeActive(\'' + c.id + '\')" onmouseout="sigInst.refresh()">' + c.name + "</a>" +
-          "<span class='wins'> wins " + (typeof wins[c.name] == "undefined" ? 0 : wins[c.name] ) + "</span>" +
-          "<span class='losses'> losses " + (typeof losses[c.name] == "undefined" ? 0 : losses[c.name] ) + "</span>" +
-          "<span class='matches'> total "+ (parseInt(typeof wins[c.name] == "undefined" ? 0 : wins[c.name] ) + parseInt(typeof losses[c.name] == "undefined" ? 0 : losses[c.name] )) + "</span>" +
+          '<li class="membership">' +
+          "<div style = 'display:inline-block;width:30%'><a class='playername' href = '#" + c.name + 
+          "' onmouseover='sigInst._core.plotter.drawHoverNode(sigInst._core.graph.nodesIndex[\"" + c.id + "\"])' onclick='nodeActive(\"" + c.id + "\")' onmouseout='sigInst.refresh()'>" + c.name + "</a></div>" +
+          "<div class='wins' style = 'display:inline-block;margin-left:15%;'>" + (typeof wins[c.name] == "undefined" ? 0 : wins[c.name] ) + "</div>" +
+          "<div class='losses'  style = 'display:inline-block;margin-left:15%';>" + (typeof losses[c.name] == "undefined" ? 0 : losses[c.name] ) + "</div>" +
+          "<div class='matches'  style = 'display:inline-block;margin-left:15%'>"+ (parseInt(typeof wins[c.name] == "undefined" ? 0 : wins[c.name] ) + parseInt(typeof losses[c.name] == "undefined" ? 0 : losses[c.name] )) + "</div>" +
           "</li>"
         )
       /*} else {
