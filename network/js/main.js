@@ -5,6 +5,8 @@ var config={};
 
 var usopenData;
 
+var connectionList;
+
 d3.json("usopendata.json",function(err,data){
   usopenData = data;
 })
@@ -489,6 +491,11 @@ function nodeActive(a) {
       	 	 //c = sigInst.neighbors,
        		 g;
             
+            
+      //clear our connection list to get ready to repopulate
+      //if(connectionList.items.length>0) connectionList.clear();
+      
+      
        var wins = usopenData.filter(function(p){return p.winner_last_name.toLowerCase() == sigInst.getNodes(a).label});
        wins = d3.nest().key(function(game){return game.loser_last_name.toLowerCase()})
           .rollup(function(games){return games.length}).map(wins)
@@ -524,14 +531,35 @@ function nodeActive(a) {
 				d = c.group;
 				f.push('<li class="cf" rel="' + c.color + '"><div class=""></div><div class="">' + d + "</div></li>");
 			}*/
-			f.push('<li class="membership"><a href="#' + c.name + 
+      //if(g=="0") {
+        $(".link ul").append(
+          '<li class="membership"><a class="playername"" href="#' + c.name + 
+          '" onmouseover="sigInst._core.plotter.drawHoverNode(sigInst._core.graph.nodesIndex[\'' + c.id + '\'])\" onclick=\"nodeActive(\'' + c.id + '\')" onmouseout="sigInst.refresh()">' + c.name + "</a>" +
+          "<span class='wins'> wins " + (typeof wins[c.name] == "undefined" ? 0 : wins[c.name] ) + "</span>" +
+          "<span class='losses'> losses " + (typeof losses[c.name] == "undefined" ? 0 : losses[c.name] ) + "</span>" +
+          "<span class='matches'> total "+ (parseInt(typeof wins[c.name] == "undefined" ? 0 : wins[c.name] ) + parseInt(typeof losses[c.name] == "undefined" ? 0 : losses[c.name] )) + "</span>" +
+          "</li>"
+        )
+      /*} else {
+        connectionList.add(
+          {
+            playername: c.name,
+            wins: +(typeof wins[c.name] == "undefined" ? 0 : wins[c.name] ),
+            losses: +(typeof losses[c.name] == "undefined" ? 0 : losses[c.name] ),
+            matches: ( parseInt(typeof wins[c.name] == "undefined" ? 0 : wins[c.name] ) + parseInt(typeof losses[c.name] == "undefined" ? 0 : losses[c.name] ) )
+          }
+        )
+      }
+      
+			f.push('<li class="membership"><a class="playername"" href="#' + c.name + 
       '" onmouseover="sigInst._core.plotter.drawHoverNode(sigInst._core.graph.nodesIndex[\'' + c.id + '\'])\" onclick=\"nodeActive(\'' + c.id + '\')" onmouseout="sigInst.refresh()">' + c.name + "</a>" +
-      " wins " + (typeof wins[c.name] == "undefined" ? 0 : wins[c.name] ) + 
-      " losses " + (typeof losses[c.name] == "undefined" ? 0 : losses[c.name] ) +
+      "<div class='wins'> wins " + (typeof wins[c.name] == "undefined" ? 0 : wins[c.name] ) + "</div>" +
+      "<div class='losses'> losses " + (typeof losses[c.name] == "undefined" ? 0 : losses[c.name] ) + "</div>" +
       " total "+ (parseInt(typeof wins[c.name] == "undefined" ? 0 : wins[c.name] ) + parseInt(typeof losses[c.name] == "undefined" ? 0 : losses[c.name] )) +
       "</li>");
+      */
 		}
-		return f;
+		//return f;
 	}
 	
 	/*console.log("mutual:");
@@ -558,7 +586,9 @@ function nodeActive(a) {
 		f.push("<h2>Outgoing (" + size + ")</h2>");
 		(size>0)? f=f.concat(createList(outgoing)) : f.push("No outgoing links<br>");
 	} else {
-		f=f.concat(createList(sigInst.neighbors));
+		//f=f.concat(createList(sigInst.neighbors));
+    createList(sigInst.neighbors);
+    connectionList = new List( "connections", { valueNames : ['playername','wins','losses','matches'] } );
 	}
 	//b is object of active node -- SAH
     b.hidden = !1;
@@ -567,7 +597,7 @@ function nodeActive(a) {
     b.attr.strokeStyle = "#000000";
     sigInst.draw(2, 2, 2, 2);
 
-    $GP.info_link.find("ul").html(f.join(""));
+    //$GP.info_link.find("ul").html(f.join(""));
     $GP.info_link.find("li").each(function () {
         var a = $(this),
             b = a.attr("rel");
