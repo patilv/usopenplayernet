@@ -14,6 +14,8 @@
   <script src="js/sigma/sigma.min.js" type="text/javascript" language="javascript"></script>
     <script src="js/sigma/sigma.parseJson.js" type="text/javascript" language="javascript"></script>
   <script src="js/fancybox/jquery.fancybox.pack.js" type="text/javascript" language="javascript"></script>
+  <script src = "js/d3/d3.v3.min.js"></script>
+  <script src = "js/list/list.min.js"></script>
   <script src="js/main.js" type="text/javascript" language="javascript"></script>
 
   <link rel="stylesheet" type="text/css" href="js/fancybox/jquery.fancybox.css"/>
@@ -66,8 +68,13 @@
     <div class="name"></div>
 	<div class="data"></div>
     <div class="p">Connections:</div>
-    <div class="link">
-      <ul>
+    <div class="link" id="connections">
+      <h5>Sort by</h5>
+      <div style="display:inline-block;width:30%;"><button class="sort" data-sort="playername">name</button></div>
+      <div style="display:inline-block;"><button class="sort" data-sort="wins">wins</button></div>
+      <div style="display:inline-block;"><button class="sort" data-sort="losses">losses</button></div>
+      <div style="display:inline-block;"><button class="sort" data-sort="matches">matches</button></div>
+      <ul class="list">
       </ul>
     </div>
   </div>
