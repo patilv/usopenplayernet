@@ -3,6 +3,12 @@ var sigInst, canvas, $GP
 //Load configuration file
 var config={};
 
+var usopenData;
+
+d3.json("usopendata.json",function(err,data){
+  usopenData = data;
+})
+
 //For debug allow a config=file.json parameter to specify the config
 function GetQueryStringParams(sParam,defaultVal) {
     var sPageURL = ""+window.location;//.search.substring(1);//This might be causing error in Safari?
@@ -482,6 +488,23 @@ function nodeActive(a) {
     	var e = [],
       	 	 //c = sigInst.neighbors,
        		 g;
+            
+       var wins = usopenData.filter(function(p){return p.winner_last_name.toLowerCase() == sigInst.getNodes(a).label});
+       wins = d3.nest().key(function(game){return game.loser_last_name})
+          .rollup(function(games){return games.length}).entries(wins)
+          .sort(function(a, b) {
+            return a.values < b.values ? 1 : -1;
+          });
+       
+       
+       
+       var losses = usopenData.filter(function(p){return p.loser_last_name.toLowerCase() == sigInst.getNodes(a).label});
+       losses = d3.nest().key(function(game){return game.winner_last_name})
+          .rollup(function(games){return games.length}).entries(losses)
+          .sort(function(a, b) {
+            return a.values < b.values ? 1 : -1;
+          });
+       
     for (g in c) {
         var d = sigInst._core.graph.nodesIndex[g];
         d.hidden = !1;
