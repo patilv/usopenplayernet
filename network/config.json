@@ -1,0 +1,53 @@
+{
+  "type": "network",
+  "version": "1.0",
+  "data": "data.json",
+  "logo": {
+    "text": "  Vivek Patil",
+    "file": "",
+    "link": ""
+  },
+  "text": {
+    "title": "Network of Players-US Open (2000-2013)",
+    "more": "",
+    "intro": " Each player is represented by a node (sized based on the number of different players connected to them) and an edge (link) between two nodes denotes that the two players have played at least one match between them. You can zoom into the network as well as out and you can hover over and/or click on a player\u0027s node to know the network of that player. Tools used were Gephi and sigmaJS with some preprocessing done primarily using igraph in R."
+  },
+  "legend": {
+    "edgeLabel": " ",
+    "colorLabel": "",
+    "nodeLabel": ""
+  },
+  "features": {
+    "search": true,
+    "groupSelectorAttribute": false,
+    "hoverBehavior": "dim"
+  },
+  "informationPanel": {
+    "imageAttribute": false,
+    "groupByEdgeDirection": false
+  },
+  "sigma": {
+    "graphProperties": {
+      "minEdgeSize": 0.2,
+      "maxNodeSize": 7,
+      "maxEdgeSize": 0.5,
+      "minNodeSize": 1
+    },
+    "drawingProperties": {
+      "labelThreshold": 10,
+      "hoverFontStyle": "bold",
+      "defaultEdgeType": "curve",
+      "defaultLabelColor": "#000",
+      "defaultLabelHoverColor": "#fff",
+      "defaultLabelSize": 14,
+      "activeFontStyle": "bold",
+      "fontStyle": "bold",
+      "defaultHoverLabelBGColor": "#002147",
+      "defaultLabelBGColor": "#ddd"
+    },
+    "mouseProperties": {
+      "minRatio": 0.75,
+      "maxRatio": 20
+    }
+  }
+}
