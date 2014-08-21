@@ -490,20 +490,13 @@ function nodeActive(a) {
        		 g;
             
        var wins = usopenData.filter(function(p){return p.winner_last_name.toLowerCase() == sigInst.getNodes(a).label});
-       wins = d3.nest().key(function(game){return game.loser_last_name})
-          .rollup(function(games){return games.length}).entries(wins)
-          .sort(function(a, b) {
-            return a.values < b.values ? 1 : -1;
-          });
-       
+       wins = d3.nest().key(function(game){return game.loser_last_name.toLowerCase()})
+          .rollup(function(games){return games.length}).map(wins)
        
        
        var losses = usopenData.filter(function(p){return p.loser_last_name.toLowerCase() == sigInst.getNodes(a).label});
-       losses = d3.nest().key(function(game){return game.winner_last_name})
-          .rollup(function(games){return games.length}).entries(losses)
-          .sort(function(a, b) {
-            return a.values < b.values ? 1 : -1;
-          });
+       losses = d3.nest().key(function(game){return game.winner_last_name.toLowerCase()})
+          .rollup(function(games){return games.length}).map(losses)
        
     for (g in c) {
         var d = sigInst._core.graph.nodesIndex[g];
@@ -520,9 +513,9 @@ function nodeActive(a) {
     e.sort(function (a, b) {
         var c = a.group.toLowerCase(),
             d = b.group.toLowerCase(),
-            e = a.name.toLowerCase(),
-            f = b.name.toLowerCase();
-        return c != d ? c < d ? -1 : c > d ? 1 : 0 : e < f ? -1 : e > f ? 1 : 0
+            e = (typeof losses[a.name] == "undefined" ? 0 : losses[a.name] ),
+            f = (typeof losses[b.name] == "undefined" ? 0 : losses[b.name] );
+        return c != d ? c < d ? -1 : c > d ? 1 : 0 : e > f ? -1 : e < f ? 1 : 0
     });
     d = "";
 		for (g in e) {
@@ -531,7 +524,12 @@ function nodeActive(a) {
 				d = c.group;
 				f.push('<li class="cf" rel="' + c.color + '"><div class=""></div><div class="">' + d + "</div></li>");
 			}*/
-			f.push('<li class="membership"><a href="#' + c.name + '" onmouseover="sigInst._core.plotter.drawHoverNode(sigInst._core.graph.nodesIndex[\'' + c.id + '\'])\" onclick=\"nodeActive(\'' + c.id + '\')" onmouseout="sigInst.refresh()">' + c.name + "</a></li>");
+			f.push('<li class="membership"><a href="#' + c.name + 
+      '" onmouseover="sigInst._core.plotter.drawHoverNode(sigInst._core.graph.nodesIndex[\'' + c.id + '\'])\" onclick=\"nodeActive(\'' + c.id + '\')" onmouseout="sigInst.refresh()">' + c.name + "</a>" +
+      " wins " + (typeof wins[c.name] == "undefined" ? 0 : wins[c.name] ) + 
+      " losses " + (typeof losses[c.name] == "undefined" ? 0 : losses[c.name] ) +
+      " total "+ (parseInt(typeof wins[c.name] == "undefined" ? 0 : wins[c.name] ) + parseInt(typeof losses[c.name] == "undefined" ? 0 : losses[c.name] )) +
+      "</li>");
 		}
 		return f;
 	}
